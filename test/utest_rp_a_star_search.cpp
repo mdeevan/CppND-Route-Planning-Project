@@ -6,7 +6,6 @@
 #include "../src/route_model.h"
 #include "../src/route_planner.h"
 
-
 static std::optional<std::vector<std::byte>> ReadFile(const std::string &path)
 {   
     std::ifstream is{path, std::ios::binary | std::ios::ate};
@@ -58,6 +57,7 @@ class RoutePlannerTest : public ::testing::Test {
     float mid_x = 0.5;
     float mid_y = 0.5;
     RouteModel::Node* mid_node = &model.FindClosestNode(mid_x, mid_y);
+
 };
 
 
@@ -76,11 +76,9 @@ TEST_F(RoutePlannerTest, TestAddNeighbors) {
     route_planner.AddNeighbors(start_node);
 
     // Correct h and g values for the neighbors of start_node.
-    std::vector<float> start_neighbor_g_vals{ 0.051776856, 0.055291083, 0.082997195, 0.10671431 };
-    std::vector<float> start_neighbor_h_vals{ 1.0858033, 1.1831238, 1.0998145, 1.1828455 };
+    std::vector<float> start_neighbor_g_vals{0.10671431, 0.082997195, 0.051776856, 0.055291083};
+    std::vector<float> start_neighbor_h_vals{1.1828455, 1.0998145, 1.0858033, 1.1831238};
     auto neighbors = start_node->neighbors;
-    std::sort(std::begin(neighbors), std::end(neighbors),
-        [](RouteModel::Node* a, RouteModel::Node* b) { return a->g_value < b->g_value; });
     EXPECT_EQ(neighbors.size(), 4);
 
     // Check results for each neighbor.
